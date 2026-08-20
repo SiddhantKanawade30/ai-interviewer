@@ -15,7 +15,7 @@ export default function Form() {
             return;
         }
         try {
-            const res = await axios.post(`${BACKEND_URL}/api/v1/pre-interview`, {
+            const res = await axios.post(`${BACKEND_URL}/api/v1/onboarding/socials`, {
                 github,
                 linkedIn
             })
