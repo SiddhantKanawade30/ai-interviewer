@@ -28,7 +28,8 @@ export async function onBoardingController(
         const profileData = await getGithubProfile(result.data.github);
 
         await db.insert(github_profiles).values({
-            candidateId: newCandidate.id,
+            //@ts-ignore
+            candidateId: newCandidate?.id,
             username: profileData.username,
             name: profileData.name,
             bio: profileData.bio,

@@ -1,5 +1,22 @@
 import { integer, pgTable, varchar, timestamp, text, jsonb } from "drizzle-orm/pg-core";
 
+export const candidates = pgTable("candidates", {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    name: varchar().notNull(),
+    email: varchar(),
+
+    role: varchar(),
+    experience: jsonb(),
+
+    skills: jsonb(),
+    education: jsonb(),
+    projects: jsonb(),
+
+    resumeText: text(),
+
+    createdAt: timestamp("created_at").defaultNow(),
+})
+
 export const socials = pgTable("socials", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     github: varchar().unique().notNull(),
@@ -10,8 +27,8 @@ export const socials = pgTable("socials", {
 export const github_profiles = pgTable("github_profiles", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     candidateId: integer("candidate_id")
-                .notNull()
-                .references(() => socials.id), // Added this as camelCase but mapped to snake_case column
+        .notNull()
+        .references(() => socials.id), // Added this as camelCase but mapped to snake_case column
     username: varchar().notNull(),
     name: varchar(),
     bio: text(),
