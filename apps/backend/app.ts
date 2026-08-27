@@ -9,5 +9,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/v1/onboarding", onboardingRouter);
+app.use("/api/v1/interview", onboardingRouter);
 
 export default app;

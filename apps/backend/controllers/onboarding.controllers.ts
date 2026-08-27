@@ -8,11 +8,12 @@ export async function onBoardingController(
     req: Request,
     res: Response
 ) {
-    const { github, linkedIn } = req.body;
+    const { github, linkedIn, candidateId } = req.body;
 
     const result = preInterviewSchema.safeParse({
         github,
         linkedIn,
+        candidateId,
     });
 
     if (!result.success) {
@@ -23,13 +24,12 @@ export async function onBoardingController(
     }
 
     try {
-        const [newCandidate] = await db.insert(socials).values(result.data).returning({ id: socials.id });
+        await db.insert(socials).values(result.data);
 
         const profileData = await getGithubProfile(result.data.github);
 
         await db.insert(github_profiles).values({
-            //@ts-ignore
-            candidateId: newCandidate?.id,
+            candidateId: result.data.candidateId,
             username: profileData.username,
             name: profileData.name,
             bio: profileData.bio,

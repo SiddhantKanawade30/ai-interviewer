@@ -35,18 +35,19 @@ export const extractDetails = async (req: Request, res: Response) => {
             });
         }
 
-        await db.insert(candidates).values({
+        const [newCandidate] = await db.insert(candidates).values({
             name: structuredData.name || "Unknown",
             experience: structuredData.experience || [],
             skills: structuredData.skills || [],
             education: structuredData.education || [],
             projects: structuredData.projects || [],
             resumeText: text
-        });
+        }).returning({ id: candidates.id });
 
         return res.status(200).json({
             message: "Details extracted and saved successfully",
-            data: structuredData
+            data: structuredData,
+            candidateId: newCandidate.id
         })
     } catch (error) {
         console.log(error)
