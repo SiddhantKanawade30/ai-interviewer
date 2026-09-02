@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { createSessionSchema } from "../zod/socials";
-import { db } from "../db";
-import { interviewSessions } from "../db/schema";
+import { createSessionSchema } from "../../zod/socials";
+import { db } from "../../db";
+import { interviewSessions } from "../../db/schema";
 
 export async function createSession(req: Request, res: Response) {
     const { candidateId, role, difficulty } = req.body;
@@ -28,7 +28,7 @@ export async function createSession(req: Request, res: Response) {
             });
 
         if (!session) {
-            throw new Error("Failed to create interview session");  
+            throw new Error("Failed to create interview session");
         }
 
         return res.status(201).json({

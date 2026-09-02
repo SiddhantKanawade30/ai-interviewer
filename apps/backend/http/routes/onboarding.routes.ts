@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { onBoardingController } from "../controllers/onboarding.controllers";
-import { uploadResume } from "../middleware/upload";
+import { uploadResume } from "../../middleware/upload";
 import { extractDetails } from "../controllers/resumeExtraction";
 import { createSession } from "../controllers/interview";
 import { createQuestions } from "../controllers/createQuestion";

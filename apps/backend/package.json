@@ -17,6 +17,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@deepgram/sdk": "^5.9.0",
     "@openrouter/sdk": "^1.2.48",
     "@types/express": "^5.0.6",
     "cors": "^2.8.6",

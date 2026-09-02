@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { answerQuestionSchema } from "../zod/socials";
-import { db } from "../db";
-import { interviewQuestions } from "../db/schema";
+import { answerQuestionSchema } from "../../zod/socials";
+import { db } from "../../db";
+import { interviewQuestions } from "../../db/schema";
 import { eq } from "drizzle-orm";
 
 export async function submitAnswer(req: Request, res: Response) {

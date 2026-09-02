@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import { preInterviewSchema } from "../zod/socials";
-import { db } from "../db/index";
-import { socials, github_profiles } from "../db/schema";
-import { getGithubProfile } from "../services/github.service";
+import { preInterviewSchema } from "../../zod/socials";
+import { db } from "../../db/index";
+import { socials, github_profiles } from "../../db/schema";
+import { getGithubProfile } from "../../services/github.service";
 
 export async function onBoardingController(
     req: Request,

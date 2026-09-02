@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { PDFParse } from "pdf-parse";
-import { db } from "../db/index";
-import { candidates } from "../db/schema";
+import { db } from "../../db/index";
+import { candidates } from "../../db/schema";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
@@ -109,21 +109,21 @@ Do not include any markdown formatting, backticks, or extra text.`
         });
 
         const data = await response.json();
-        
+
         if (data.error) {
             console.error("OpenRouter API Error:", data.error);
             return null;
         }
 
         let content = data.choices[0].message.content;
-        
+
         // Sometimes LLMs still wrap with markdown blocks even with json_object enabled
         if (content.startsWith("\`\`\`json")) {
             content = content.replace(/^\`\`\`json\n/, "").replace(/\n\`\`\`$/, "");
         } else if (content.startsWith("\`\`\`")) {
             content = content.replace(/^\`\`\`\n/, "").replace(/\n\`\`\`$/, "");
         }
-        
+
         return JSON.parse(content);
     } catch (error) {
         console.error("Error extracting structured data:", error);

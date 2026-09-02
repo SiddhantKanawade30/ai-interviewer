@@ -1,4 +1,11 @@
-import { integer, pgTable, varchar, timestamp, text, jsonb } from "drizzle-orm/pg-core";
+import { integer, pgTable, varchar, timestamp, text, jsonb, pgEnum } from "drizzle-orm/pg-core";
+
+export const interviewStatusEnum = pgEnum("interview_status", [
+    "pending",
+    "active",
+    "completed",
+    "cancelled"
+]);
 
 export const candidates = pgTable("candidates", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -51,9 +58,11 @@ export const interviewSessions = pgTable("interview_sessions", {
     role: varchar().notNull(),
     difficulty: varchar().notNull(),
 
-    status: varchar().notNull().default("pending"),
+    status: interviewStatusEnum("status").default("pending").notNull(),
 
     recordingUrl: text(),
+    feedback: jsonb(),
+    score: integer(),
 
     startedAt: timestamp("started_at"),
     completedAt: timestamp("completed_at"),

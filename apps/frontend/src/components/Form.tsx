@@ -23,7 +23,6 @@ export default function Form({ onStart }: { onStart?: (sessionId: number) => voi
         setIsLoading(true)
         try {
 
-            // Then upload the resume
             const formData = new FormData();
             formData.append("resume", resume);
 
@@ -33,7 +32,6 @@ export default function Form({ onStart }: { onStart?: (sessionId: number) => voi
                 }
             })
             
-            toast.success("Profile saved and resume parsed successfully!", { position: "top-center" })
             console.log(resumeRes.data);
             const candidateId = resumeRes.data.candidateId;
 
@@ -49,11 +47,12 @@ export default function Form({ onStart }: { onStart?: (sessionId: number) => voi
                 difficulty
             })
 
+            toast.success("Profile saved and resume parsed successfully!", { position: "top-center" })
+
             if (onStart && sessionRes.data.sessionId) {
                 onStart(sessionRes.data.sessionId);
             }
 
-            
         } catch (err) {
             console.log(err)
             toast.error("An error occurred during submission", { position: "top-center" })
