@@ -13,8 +13,7 @@ import {
   Sparkles, 
   RefreshCw,
   AlertCircle,
-  MessageSquareCode,
-  FileText
+  MessageSquareCode
 } from "lucide-react";
 
 interface Message {
@@ -47,7 +46,9 @@ export default function InterviewPage({ sessionId }: { sessionId: number }) {
   const [questionNumber, setQuestionNumber] = useState<number>(1);
   const [isFinished, setIsFinished] = useState<boolean>(false);
   const [evaluation, setEvaluation] = useState<EvaluationReport | null>(null);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const hasInitializedRef = useRef<boolean>(false);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -72,17 +73,22 @@ export default function InterviewPage({ sessionId }: { sessionId: number }) {
       const questionData = res.data.question;
       if (questionData) {
         setCurrentQuestionId(questionData.id);
-        const qNum = questionData.questionNumber || res.data.questionNumber || (messages.filter(m => m.role === 'system').length + 1);
+        const qNum = questionData.questionNumber || res.data.questionNumber || 1;
         setQuestionNumber(qNum);
 
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: questionData.id.toString(),
-            role: "system",
-            content: questionData.question,
-          },
-        ]);
+        setMessages((prev) => {
+          if (prev.some((m) => m.id === questionData.id.toString())) {
+            return prev;
+          }
+          return [
+            ...prev,
+            {
+              id: questionData.id.toString(),
+              role: "system",
+              content: questionData.question,
+            },
+          ];
+        });
       }
     } catch (err: any) {
       console.error(err);
@@ -100,14 +106,15 @@ export default function InterviewPage({ sessionId }: { sessionId: number }) {
   };
 
   useEffect(() => {
-    if (sessionId) {
+    if (sessionId && !hasInitializedRef.current) {
+      hasInitializedRef.current = true;
       fetchNextQuestion();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
 
   const handleSend = async () => {
-    if (!inputValue.trim() || !currentQuestionId || isFinished) return;
+    if (!inputValue.trim() || !currentQuestionId || isFinished || isLoading) return;
 
     const answerText = inputValue.trim();
     setInputValue("");
@@ -160,7 +167,7 @@ export default function InterviewPage({ sessionId }: { sessionId: number }) {
           {/* Progress Counter */}
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20">
-              {isFinished ? "Completed (10/10)" : `Question ${questionNumber} of 10`}
+              {isFinished ? "Completed" : `Question ${questionNumber} of 5`}
             </span>
           </div>
         </div>
